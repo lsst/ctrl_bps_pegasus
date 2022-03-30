@@ -36,9 +36,9 @@ import subprocess
 from Pegasus.catalogs import replica_catalog, sites_catalog, transformation_catalog
 from Pegasus.DAX3 import ADAG, PFN, Executable, File, Job, Link, Namespace, Profile
 
-from ... import BaseWmsService, BaseWmsWorkflow
-from ...bps_utils import chdir
-from ..htcondor import HTCondorService, htc_write_attribs
+from lsst.ctrl.bps import BaseWmsService, BaseWmsWorkflow
+from lsst.ctrl.bps.bps_utils import chdir
+from lsst.ctrl.bps.htcondor import HTCondorService, htc_write_attribs
 
 _LOG = logging.getLogger(__name__)
 
