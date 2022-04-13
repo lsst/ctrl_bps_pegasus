@@ -37,7 +37,7 @@ from Pegasus.catalogs import replica_catalog, sites_catalog, transformation_cata
 from Pegasus.DAX3 import ADAG, PFN, Executable, File, Job, Link, Namespace, Profile
 
 from lsst.ctrl.bps import BaseWmsService, BaseWmsWorkflow
-from lsst.ctrl.bps.bps_utils import chdir
+from lsst.ctrl.bps.bps_utils import chdir, create_count_summary
 from lsst.ctrl.bps.htcondor import HTCondorService, htc_write_attribs
 
 _LOG = logging.getLogger(__name__)
@@ -379,12 +379,13 @@ class PegasusWorkflow(BaseWmsWorkflow):
 
         job.addProfile(Profile(Namespace.CONDOR, key="+bps_job_name", value=f'"{gwf_job.name}"'))
         job.addProfile(Profile(Namespace.CONDOR, key="+bps_job_label", value=f'"{gwf_job.label}"'))
-        if "quanta_summary" in gwf_job.tags:
-            job.addProfile(
-                Profile(
-                    Namespace.CONDOR, key="+bps_job_quanta", value=f"\"{gwf_job.tags['quanta_summary']}\""
-                )
+        job.addProfile(
+            Profile(
+                Namespace.CONDOR,
+                key="+bps_job_quanta",
+                value=f"\"{create_count_summary(generic_workflow.job_counts)}\"",
             )
+        )
 
         # Specify job's inputs.
         for gwf_file in generic_workflow.get_job_inputs(gwf_job.name, data=True, transfer_only=True):
