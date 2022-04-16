@@ -8,15 +8,27 @@ lsst.ctrl.bps.pegasus
 
 .. Paragraph that describes what this Python module does and links to related modules and frameworks.
 
-.. .. _lsst.ctrl.bps.pegasus-using:
+.. .. _lsst.ctrl.bps-changes:
 
-.. Using lsst.ctrl.bps.pegasus
-.. ===========================
+.. Changes
+.. =======
+
+.. .. toctree::
+..   :maxdepth: 1
+
+..   CHANGES.rst
+
+.. _lsst.ctrl.bps.pegasus-using:
+
+Using lsst.ctrl.bps.pegasus
+===========================
 
 .. toctree linking to topics related to using the module's APIs.
 
-.. .. toctree::
-..    :maxdepth: 1
+.. toctree::
+   :maxdepth: 1
+
+   userguide.rst
 
 .. _lsst.ctrl.bps.pegasus-contributing:
 
@@ -31,17 +43,7 @@ You can find Jira issues for this module under the `ctrl_bps_pegasus <https://ji
 .. .. toctree::
 ..    :maxdepth: 1
 
-.. .. _lsst.ctrl.bps.pegasus-scripts:
-
-.. Script reference
-.. ================
-
-.. .. TODO: Add an item to this toctree for each script reference topic in the scripts subdirectory.
-
-.. .. toctree::
-..    :maxdepth: 1
-
-.. .. _lsst.ctrl.bps.pegasus-pyapi:
+.. _lsst.ctrl.bps.pegasus-pyapi:
 
 Python API reference
 ====================
