@@ -60,7 +60,7 @@ class PegasusService(BaseWmsService):
             The root directory into which all WMS-specific files are written.
 
         Returns
-        ----------
+        -------
         peg_workflow : `lsst.ctrl.bps.wms.pegasus.PegasusWorkflow`
             A workflow ready for Pegasus to run.
         """
@@ -129,16 +129,17 @@ class PegasusService(BaseWmsService):
 
     def report(self, wms_workflow_id=None, user=None, hist=0, pass_thru=None, is_global=True):
         """Query WMS for status of submitted WMS workflows
-         Parameters
-         ----------
-         wms_workflow_id : `int` or `str`, optional
-             Id that can be used by WMS service to look up status.
-         user : `str`, optional
-             Limit report to submissions by this particular user
-         hist : `int`, optional
-             Number of days to expand report to include finished WMS workflows.
-         pass_thru : `str`, optional
-             Additional arguments to pass through to the specific WMS service.
+
+        Parameters
+        ----------
+        wms_workflow_id : `int` or `str`, optional
+            Id that can be used by WMS service to look up status.
+        user : `str`, optional
+            Limit report to submissions by this particular user
+        hist : `int`, optional
+            Number of days to expand report to include finished WMS workflows.
+        pass_thru : `str`, optional
+            Additional arguments to pass through to the specific WMS service.
         is_global : `bool`, optional
             If set, all job queues (and their histories) will be queried for
             job information. Defaults to False which means that only the local
@@ -166,7 +167,7 @@ class PegasusService(BaseWmsService):
             Information to pass through to WMS.
 
         Returns
-        --------
+        -------
         deleted : `bool`
             Whether successful deletion or not.  Currently, if any doubt or any
             individual jobs not deleted, return False.
