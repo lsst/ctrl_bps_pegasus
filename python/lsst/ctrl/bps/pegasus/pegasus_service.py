@@ -1,4 +1,4 @@
-# This file is part of ctrl_bps.
+# This file is part of ctrl_bps_pegasus.
 #
 # Developed for the LSST Data Management System.
 # This product includes software developed by the LSST Project
@@ -36,9 +36,9 @@ import subprocess
 from Pegasus.catalogs import replica_catalog, sites_catalog, transformation_catalog
 from Pegasus.DAX3 import ADAG, PFN, Executable, File, Job, Link, Namespace, Profile
 
-from ... import BaseWmsService, BaseWmsWorkflow
-from ...bps_utils import chdir
-from ..htcondor import HTCondorService, htc_write_attribs
+from lsst.ctrl.bps import BaseWmsService, BaseWmsWorkflow
+from lsst.ctrl.bps.bps_utils import chdir, create_count_summary
+from lsst.ctrl.bps.htcondor import HTCondorService, htc_write_attribs
 
 _LOG = logging.getLogger(__name__)
 
@@ -60,7 +60,7 @@ class PegasusService(BaseWmsService):
             The root directory into which all WMS-specific files are written.
 
         Returns
-        ----------
+        -------
         peg_workflow : `lsst.ctrl.bps.wms.pegasus.PegasusWorkflow`
             A workflow ready for Pegasus to run.
         """
@@ -129,16 +129,17 @@ class PegasusService(BaseWmsService):
 
     def report(self, wms_workflow_id=None, user=None, hist=0, pass_thru=None, is_global=True):
         """Query WMS for status of submitted WMS workflows
-         Parameters
-         ----------
-         wms_workflow_id : `int` or `str`, optional
-             Id that can be used by WMS service to look up status.
-         user : `str`, optional
-             Limit report to submissions by this particular user
-         hist : `int`, optional
-             Number of days to expand report to include finished WMS workflows.
-         pass_thru : `str`, optional
-             Additional arguments to pass through to the specific WMS service.
+
+        Parameters
+        ----------
+        wms_workflow_id : `int` or `str`, optional
+            Id that can be used by WMS service to look up status.
+        user : `str`, optional
+            Limit report to submissions by this particular user
+        hist : `int`, optional
+            Number of days to expand report to include finished WMS workflows.
+        pass_thru : `str`, optional
+            Additional arguments to pass through to the specific WMS service.
         is_global : `bool`, optional
             If set, all job queues (and their histories) will be queried for
             job information. Defaults to False which means that only the local
@@ -166,7 +167,7 @@ class PegasusService(BaseWmsService):
             Information to pass through to WMS.
 
         Returns
-        --------
+        -------
         deleted : `bool`
             Whether successful deletion or not.  Currently, if any doubt or any
             individual jobs not deleted, return False.
@@ -379,12 +380,13 @@ class PegasusWorkflow(BaseWmsWorkflow):
 
         job.addProfile(Profile(Namespace.CONDOR, key="+bps_job_name", value=f'"{gwf_job.name}"'))
         job.addProfile(Profile(Namespace.CONDOR, key="+bps_job_label", value=f'"{gwf_job.label}"'))
-        if "quanta_summary" in gwf_job.tags:
-            job.addProfile(
-                Profile(
-                    Namespace.CONDOR, key="+bps_job_quanta", value=f"\"{gwf_job.tags['quanta_summary']}\""
-                )
+        job.addProfile(
+            Profile(
+                Namespace.CONDOR,
+                key="+bps_job_quanta",
+                value=f"\"{create_count_summary(generic_workflow.job_counts)}\"",
             )
+        )
 
         # Specify job's inputs.
         for gwf_file in generic_workflow.get_job_inputs(gwf_job.name, data=True, transfer_only=True):
